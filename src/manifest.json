@@ -1,0 +1,17 @@
+{
+	"compatibleVersion": 3,
+	"bundleVersion": 1,
+	"commands": [
+		{
+			"name": "export",
+			"identifier": "export-identifier",
+			"script": "./export.js"
+		}
+	],
+	"menu": {
+		"title": "sketch-svg-symbols",
+		"items": [
+			"export-identifier"
+		]
+	}
+}

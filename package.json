@@ -1,0 +1,40 @@
+{
+	"name": "sketch-svg-symbols",
+	"version": "0.1.0",
+	"description": "Export multiple SVG into a single file with symbols",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "skpm build --watch",
+		"build": "skpm build",
+		"publish": "skpm publish",
+		"log": "skpm log -f",
+		"link": "skpm link"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/MathieuDebit/sketch-svg-symbols.git"
+	},
+	"keywords": [
+		"Sketch",
+		"SVG",
+		"Symbols",
+		"Export"
+	],
+	"author": "Mathieu Débit <mathieu@debit.email>",
+	"license": "WTFPL",
+	"bugs": {
+		"url": "https://github.com/MathieuDebit/sketch-svg-symbols/issues"
+	},
+	"homepage": "https://github.com/MathieuDebit/sketch-svg-symbols#readme",
+	"engines": {
+		"sketch": ">=3.0"
+	},
+	"devDependencies": {
+		"skpm": "^0.10.5"
+	},
+	"skpm": {
+		"manifest": "src/manifest.json",
+		"main": "sketch-svg-symbols.sketchplugin"
+	}
+}
