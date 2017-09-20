@@ -36,5 +36,8 @@
 	"skpm": {
 		"manifest": "src/manifest.json",
 		"main": "sketch-svg-symbols.sketchplugin"
+	},
+	"dependencies": {
+		"sketch-module-fs": "^0.1.2"
 	}
 }
