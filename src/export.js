@@ -1,43 +1,48 @@
 import fs from 'sketch-module-fs'
+import { SVG_TEMPLATE } from './templates';
+import { TMP_FOLDER, VIEWBOX_RE, PATH_RE } from './constants';
 
-const TMP_FOLDER = '/tmp/sketch-svg-symbols';
 
 export default function (context) {
+
+  fs.rmdir(TMP_FOLDER);
+
+
   // Export Artboards
   const sketch = context.api();
 
   const document = sketch.selectedDocument;
   const page = document.selectedPage;
 
-  const options = {
+  page.exportArtboards({
     "scales": "1",
     "formats": "svg",
     "output": TMP_FOLDER
-  };
-
-  page.exportArtboards(options);
+  });
 
 
   // Create final SVG file
-  const SVGs = NSFileManager.defaultManager().subpathsAtPath(TMP_FOLDER);
-  let exportFile;
+  let ids = [];
+  let viewBoxes = [];
+  let paths = [];
 
-  for (var i = 0; i < SVGs.length; i++) {
-    const svg = SVGs[i];
-    const file = fs.readFile(`${TMP_FOLDER}/${svg}`);
+  page.iterate(layer => {
+    const name = layer.name;
+    const file = fs.readFile(`${TMP_FOLDER}/${name}.svg`);
+    const viewBox = file.match(VIEWBOX_RE)[0];
+    const path = file.match(PATH_RE)[0];
 
-    exportFile += file;
+    if (viewBox && path) {
+      ids.push(name);
+      viewBoxes.push(viewBox);
+      paths.push(path);
+    }
+  });
 
-    console.log(svg);
-    console.log(file);
-    console.log('________________');
-  }
+  const svg = SVG_TEMPLATE(ids, viewBoxes, paths);
 
-  fs.writeFile(`${TMP_FOLDER}/export.svg`, exportFile);
-  console.log('_________________');
-  console.log('EXPORT FILE');
-  console.log('_________________');
-  console.log(fs.readFile(`${TMP_FOLDER}/export.svg`));
+  const currentDir = context.document.fileURL().URLByDeletingLastPathComponent().path();
+  fs.writeFile(`${currentDir}/${page.name}.svg`, svg);
 
 
   // Done
