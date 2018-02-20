@@ -30,7 +30,11 @@ export default function (context) {
     const name = layer.name;
     const file = fs.readFile(`${TMP_FOLDER}/${name}.svg`);
     const viewBox = file.match(VIEWBOX_RE)[0];
-    const path = file.match(PATH_RE)[0];
+    const pathMatch = file.match(PATH_RE);
+
+    if (!pathMatch) return showError(`No path match found for ${name}`);
+
+    const path = pathMatch[0];
 
     if (viewBox && path) {
       ids.push(name);
@@ -48,3 +52,8 @@ export default function (context) {
   // Done
   context.document.showMessage('Done 🙌');
 };
+
+function showError(message) {
+  console.log(`Error: ${message}`);
+  context.document.showMessage(`❗️Error: ${message}`);
+}
